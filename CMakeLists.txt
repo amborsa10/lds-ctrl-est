@@ -15,6 +15,9 @@ message(WARNING "Build/Use of this library on Windows is untested and
   please file an issue and/or make a pull request @${PROJECT_URL} .")
 endif()
 
+#4/20/2021 - needed to build ldsCtrlEst.lib
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+
 # Specify C++ standard
 # n.b. this has to be before adding targets
 set(CMAKE_CXX_STANDARD 11)
@@ -127,9 +130,15 @@ endif()
 # save the CXX flags configured for later use by dependency.
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${PROJECT_REQUIRED_CXX_FLAGS}")
 
+# 4/20/2021
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DH5_BUILT_AS_DYNAMIC_LIB -DARMA_USE_LAPACK")
+
+
 # after getting these lists, take out duplicates
 set(PROJECT_REQUIRED_LIBRARIES ${PROJECT_REQUIRED_LIBRARIES_ABSOLUTE_NAME})
 list(APPEND PROJECT_REQUIRED_LIBRARIES ${PROJECT_REQUIRED_LIBRARIES_SHORT_NAME})
+# list(APPEND PROJECT_REQUIRED_LIBRARIES "C:/local/lib/libopenblas.lib") # hardcoded, 4/20/2021
+list(APPEND PROJECT_REQUIRED_LIBRARIES "C:/opt/lib/openblas.lib") # hardcoded, 5/3/2021 (OpenBLAS built from source)
 list(REMOVE_DUPLICATES PROJECT_REQUIRED_LIBRARIES)
 list(REMOVE_DUPLICATES PROJECT_REQUIRED_INCLUDE_DIRS)
 list(REMOVE_DUPLICATES PROJECT_REQUIRED_LIBRARY_DIRS)

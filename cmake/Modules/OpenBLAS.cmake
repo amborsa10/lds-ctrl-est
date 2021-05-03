@@ -15,8 +15,15 @@
 #
 
 find_package(OpenBLAS COMPONENTS static)
+set(OpenBLAS_LIBRARIES "C:/opt/lib/openblas.lib")
+set(OpenBLAS_LIBRARY "C:/opt/lib/openblas.lib")
+set(OpenBLAS_FOUND TRUE)
+
 
 if(NOT OpenBLAS_FOUND)
+    
+  message(STATUS "OpenBLAS not found...")
+
   # try to find by pkg-config if not found
   pkg_check_modules(OpenBLAS openblas)
 
@@ -53,10 +60,10 @@ if(OpenBLAS_FOUND)
   else()
     #assuming windows...
     #Not sure if PATH here is necessary.
-    find_library(GFortran_LIBRARY NAMES gfortran libgfortran libgfortran.dll PATHS $ENV{PATH})
+    # find_library(GFortran_LIBRARY NAMES gfortran libgfortran libgfortran.dll PATHS $ENV{PATH})
   endif()
 
-  if(NOT GFortran_LIBRARY)
+  if(NOT GFortran_LIBRARY AND NOT WIN32)
     message(FATAL_ERROR "GFortran library not found. Is the path to this listed in LD_LIBRARY_PATH (Unix) or PATH (Windows) environment variables?")
     set(OpenBLAS_FOUND FALSE)
     set(LDSCTRLEST_BUILD_STATIC FALSE)
